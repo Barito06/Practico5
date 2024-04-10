@@ -4,6 +4,9 @@
  */
 package Vistas;
 
+import java.awt.Color;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -83,6 +86,9 @@ public class Ventana extends javax.swing.JFrame {
         jLabel4.setText("Precio");
 
         jtProducto.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtProductoFocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jtProductoFocusLost(evt);
             }
@@ -93,7 +99,21 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        jtPrecio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtPrecioFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtPrecioFocusLost(evt);
+            }
+        });
+
         jButton1.setText("Agregar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -155,6 +175,7 @@ public class Ventana extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("GESTOR DE PRODUCTOS");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -162,8 +183,8 @@ public class Ventana extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -221,14 +242,45 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jtProductoActionPerformed
 
     private void ComboCategoriaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ComboCategoriaFocusLost
-        if (ComboCategoria.getSelectedItem() == null || ComboCategoria.getSelectedIndex() == -1 ) {
-            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
-        }
+        
     }//GEN-LAST:event_ComboCategoriaFocusLost
 
     private void jtProductoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtProductoFocusLost
-        
+        if (jtProducto.getText().isEmpty()) {
+            jtProducto.setText("Nombre del producto");
+            jtProducto.setForeground(Color.gray);
+        }
     }//GEN-LAST:event_jtProductoFocusLost
+
+    private void jtPrecioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtPrecioFocusLost
+        // TODO add your handling code here:
+                                          
+        if (jtPrecio.getText().isEmpty()) {
+            jtPrecio.setText("Precio del producto");
+            jtPrecio.setForeground(Color.gray);
+        }
+    }//GEN-LAST:event_jtPrecioFocusLost
+
+    private void jtProductoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtProductoFocusGained
+        // TODO add your handling code here:
+        if (jtProducto.getText().equals("Nombre del producto")) {
+            jtProducto.setText("");
+            jtProducto.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_jtProductoFocusGained
+
+    private void jtPrecioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtPrecioFocusGained
+        // TODO add your handling code here:
+        if (jtPrecio.getText().equals("Precio del producto")) {
+            jtPrecio.setText("");
+            jtPrecio.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_jtPrecioFocusGained
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+        verificarCamposVacios();
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -281,4 +333,16 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JTextField jtProducto;
     private javax.swing.JTable tProductos;
     // End of variables declaration//GEN-END:variables
+
+    
+    private void verificarCamposVacios(){
+        if (ComboCategoria.getSelectedItem() == null || ComboCategoria.getSelectedIndex() == -1 ) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
+        }else if (jtProducto.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
+        }else if (jtPrecio.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
+        }
+    }
 }
+
