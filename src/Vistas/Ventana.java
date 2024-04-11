@@ -5,6 +5,7 @@
 package Vistas;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -70,11 +71,6 @@ public class Ventana extends javax.swing.JFrame {
 
         ComboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronica", "Ropa", "Alimentos" }));
         ComboCategoria.setSelectedIndex(-1);
-        ComboCategoria.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                ComboCategoriaFocusLost(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel2.setText("Categorias");
@@ -93,11 +89,6 @@ public class Ventana extends javax.swing.JFrame {
                 jtProductoFocusLost(evt);
             }
         });
-        jtProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtProductoActionPerformed(evt);
-            }
-        });
 
         jtPrecio.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -112,6 +103,11 @@ public class Ventana extends javax.swing.JFrame {
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
+            }
+        });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -237,14 +233,6 @@ public class Ventana extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtProductoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtProductoActionPerformed
-
-    private void ComboCategoriaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ComboCategoriaFocusLost
-        
-    }//GEN-LAST:event_ComboCategoriaFocusLost
-
     private void jtProductoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtProductoFocusLost
         if (jtProducto.getText().isEmpty()) {
             jtProducto.setText("Nombre del producto");
@@ -282,6 +270,40 @@ public class Ventana extends javax.swing.JFrame {
         verificarCamposVacios();
     }//GEN-LAST:event_jButton1MouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String categoria;
+        String producto;
+        double precio;
+         categoria=(String)ComboCategoria.getSelectedItem();
+         producto=jtProducto.getText();
+        
+        if (producto.isEmpty() || jtPrecio.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
+            return;
+        }
+                    
+            Pattern p = Pattern.compile("\\d{1,8}[,.]\\d{2}");
+            Matcher m= p.matcher(jtPrecio.getText());
+            if (!m.matches()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un número con 2 decimales");
+            System.out.println("se ingreso precio: "+" $"+jtPrecio.getText());
+            jtPrecio.setText( " ");
+            jtPrecio.requestFocus();
+            return;
+            }
+            precio= Double.parseDouble(jtPrecio.getText().replace(",", "."));
+            ArrayList<Object> listaProductos = new ArrayList<>();
+            listaProductos.add(categoria);
+            listaProductos.add(producto);
+            listaProductos.add(precio);
+            
+            modelo.addRow(listaProductos.toArray());
+            
+            ComboCategoria.setSelectedIndex(-1);
+            jtProducto.setText("");
+            jtPrecio.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+   
     /**
      * @param args the command line arguments
      */
