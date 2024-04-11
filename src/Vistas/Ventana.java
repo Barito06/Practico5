@@ -5,47 +5,29 @@
 package Vistas;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 /**
  *
  * @author joack
  */
 public class Ventana extends javax.swing.JFrame {
-    
-    
-    private DefaultTableModel modelo = new DefaultTableModel(){
-        public boolean isCellEditable(int fila, int col){
+
+    private DefaultTableModel tableModel;
+
+    private DefaultTableModel modelo = new DefaultTableModel() {
+        public boolean isCellEditable(int fila, int col) {
             return false;
         }
     };
-    
+
     public Ventana() {
         initComponents();
-        
-        String items [] = {"Categoria","Producto","Precio"};
-        modelo.setColumnIdentifiers(items);
-        tProductos.setModel(modelo);
-        
-        TableColumn cCategoria= tProductos.getColumnModel().getColumn(0);
-        cCategoria.setPreferredWidth(150);
-        
-        TableColumn cProducto= tProductos.getColumnModel().getColumn(1);
-        cProducto.setPreferredWidth(250);
-                
-        TableColumn cPrecio= tProductos.getColumnModel().getColumn(2);
-        cPrecio.setPreferredWidth(100);
-        
-        DefaultTableCellRenderer centrar= (DefaultTableCellRenderer) tProductos.getTableHeader().getDefaultRenderer();
-        centrar.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        tableModel = new DefaultTableModel(new String[]{"Categoría", "Producto", "Precio"}, 0);
+        tProductos.setModel(tableModel);
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -53,7 +35,7 @@ public class Ventana extends javax.swing.JFrame {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jPanel1 = new javax.swing.JPanel();
-        ComboCategoria = new javax.swing.JComboBox<>();
+        comboCategoria = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -69,8 +51,8 @@ public class Ventana extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        ComboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronica", "Ropa", "Alimentos" }));
-        ComboCategoria.setSelectedIndex(-1);
+        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electronica", "Ropa", "Alimentos" }));
+        comboCategoria.setSelectedIndex(-1);
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel2.setText("Categorias");
@@ -100,11 +82,6 @@ public class Ventana extends javax.swing.JFrame {
         });
 
         jButton1.setText("Agregar");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -124,7 +101,7 @@ public class Ventana extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ComboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -140,7 +117,7 @@ public class Ventana extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ComboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -242,7 +219,7 @@ public class Ventana extends javax.swing.JFrame {
 
     private void jtPrecioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtPrecioFocusLost
         // TODO add your handling code here:
-                                          
+
         if (jtPrecio.getText().isEmpty()) {
             jtPrecio.setText("Precio del producto");
             jtPrecio.setForeground(Color.gray);
@@ -265,48 +242,27 @@ public class Ventana extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jtPrecioFocusGained
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        // TODO add your handling code here:
-        verificarCamposVacios();
-    }//GEN-LAST:event_jButton1MouseClicked
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String categoria;
-        String producto;
+        String categoria = (String) comboCategoria.getSelectedItem();
+        String producto = jtProducto.getText();
         double precio;
-         categoria=(String)ComboCategoria.getSelectedItem();
-         producto=jtProducto.getText();
-        
-        if (producto.isEmpty() || jtPrecio.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
+
+        try {
+            if(verificarCamposVacios() == false){
+            JOptionPane.showMessageDialog(this, "Faltan campos a completar");
+            }
+            precio = Double.parseDouble(jtPrecio.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.");
             return;
         }
-                    
-            Pattern p = Pattern.compile("\\d{1,8}[,.]\\d{2}");
-            Matcher m= p.matcher(jtPrecio.getText());
-            if (!m.matches()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un número con 2 decimales");
-            System.out.println("se ingreso precio: "+" $"+jtPrecio.getText());
-            jtPrecio.setText( " ");
-            jtPrecio.requestFocus();
-            return;
-            }
-            precio= Double.parseDouble(jtPrecio.getText().replace(",", "."));
-            ArrayList<Object> listaProductos = new ArrayList<>();
-            listaProductos.add(categoria);
-            listaProductos.add(producto);
-            listaProductos.add(precio);
-            
-            modelo.addRow(listaProductos.toArray());
-            
-            ComboCategoria.setSelectedIndex(-1);
-            jtProducto.setText("");
-            jtPrecio.setText("");
+        if (verificarCamposVacios()) {
+            tableModel.addRow(new Object[]{categoria, producto, precio});
+            JOptionPane.showMessageDialog(this, "Producto Guardado");
+            limpiarCampos();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
-   
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -338,10 +294,10 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ComboCategoria;
+    private javax.swing.JComboBox<String> comboCategoria;
     private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel2;
@@ -356,15 +312,23 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JTable tProductos;
     // End of variables declaration//GEN-END:variables
 
-    
-    private void verificarCamposVacios(){
-        if (ComboCategoria.getSelectedItem() == null || ComboCategoria.getSelectedIndex() == -1 ) {
-            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
-        }else if (jtProducto.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
-        }else if (jtPrecio.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe completar todos campos");
+    private boolean verificarCamposVacios() {
+        int combo = comboCategoria.getSelectedIndex();
+        String producto = jtProducto.getText();
+
+        if (combo == -1) {
+            return false;
         }
+
+        if (producto.isEmpty() || producto.equals("Nombre del producto")) {
+            return false;
+        }
+        return true;
+    }
+
+    private void limpiarCampos() {
+        comboCategoria.setSelectedIndex(-1);
+        jtProducto.setText("");
+        jtPrecio.setText("");
     }
 }
-
