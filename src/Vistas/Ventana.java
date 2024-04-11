@@ -27,6 +27,10 @@ public class Ventana extends javax.swing.JFrame {
         initComponents();
         tableModel = new DefaultTableModel(new String[]{"Categoría", "Producto", "Precio"}, 0);
         tProductos.setModel(tableModel);
+        jtProducto.setText("Nombre del producto");
+        jtProducto.setForeground(Color.gray);
+        jtPrecio.setText("Precio del producto");
+        jtPrecio.setForeground(Color.gray);
     }
 
     @SuppressWarnings("unchecked")
@@ -219,7 +223,6 @@ public class Ventana extends javax.swing.JFrame {
 
     private void jtPrecioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtPrecioFocusLost
         // TODO add your handling code here:
-
         if (jtPrecio.getText().isEmpty()) {
             jtPrecio.setText("Precio del producto");
             jtPrecio.setForeground(Color.gray);
@@ -249,16 +252,16 @@ public class Ventana extends javax.swing.JFrame {
 
         try {
             if(verificarCamposVacios() == false){
-            JOptionPane.showMessageDialog(this, "Faltan campos a completar");
+                return;
             }
             precio = Double.parseDouble(jtPrecio.getText());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.");
+            JOptionPane.showMessageDialog(this, "Precio debe tener numeros validos.");
             return;
         }
         if (verificarCamposVacios()) {
             tableModel.addRow(new Object[]{categoria, producto, precio});
-            JOptionPane.showMessageDialog(this, "Producto Guardado");
+            JOptionPane.showMessageDialog(this, "Producto Guardado.");
             limpiarCampos();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -313,14 +316,22 @@ public class Ventana extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private boolean verificarCamposVacios() {
-        int combo = comboCategoria.getSelectedIndex();
+        int categoria = comboCategoria.getSelectedIndex();
         String producto = jtProducto.getText();
+        String precio = jtPrecio.getText();
 
-        if (combo == -1) {
+        if (categoria == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una categoría.");
             return false;
         }
 
         if (producto.isEmpty() || producto.equals("Nombre del producto")) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre de producto.");
+            return false;
+        }
+        
+        if (precio.isEmpty() || precio.equals("Precio del producto")) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un precio.");
             return false;
         }
         return true;
